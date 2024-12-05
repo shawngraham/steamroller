@@ -61,3 +61,67 @@ Then: `./run_pipeline.sh`
 The coreference resolution was working wonderfully in google colab, but I'm having a devil of a time making it work locally. Your milage may vary.
 
 Incidentally, I've commented out the citation removal step, and just piped the name_replacement to feed the coref, skipping citation removal (which is slightly borked I now discover. Sigh...)
+
+graph TD
+    A[Start] --> B{Create directories};
+    B --> C[Run initial stages];
+    C --> D[python src/name_replacement.py];
+    D --> E[python src/coref_resolution.py];
+    E --> F[python src/triplet_extraction.py];
+    F --> G[Run error checking];
+    G --> H[python src/csv_processing.py error_check];
+    H --> I[Manual Inspection];
+    I --> J{Manual checks complete?};
+    J -- Yes --> K[Continue processing];
+    J -- No --> I;
+    K --> L[python src/csv_processing.py final_process];
+    L --> M[python src/csv_processing.py concatenate];
+    M --> N[python src/csv_processing.py gexf];
+    N --> O[End];
+
+    subgraph "Initial Stages"
+        C --> D;
+        D --> E;
+        E --> F;
+    end
+
+    subgraph "Error Checking"
+        G --> H;
+    end
+
+    subgraph "Final Processing"
+        K --> L;
+        L --> M;
+        M --> N;
+    end
+
+    subgraph "name_replacement.py"
+        D1[Read text files] --> D2[Extract full names];
+        D2 --> D3[Replace surnames];
+        D3 --> D4[Write to output];
+    end
+
+    subgraph "coref_resolution.py"
+        E1[Read text files] --> E2[Process with spacy and coreferee];
+        E2 --> E3[Perform entity co-resolution];
+        E3 --> E4[Write to output];
+    end
+
+    subgraph "triplet_extraction.py"
+        F1[Read text files] --> F2[Split into paragraphs];
+        F2 --> F3[Send to LLM];
+        F3 --> F4[Extract triplets];
+        F4 --> F5[Write to CSV];
+    end
+
+    subgraph "csv_processing.py"
+        H1[error_check] --> H2[Check predicates and column count];
+        H2 --> H3[Write to output];
+        L1[final_process] --> L2[Process CSVs];
+        L2 --> L3[Write to output];
+        M1[concatenate] --> M2[Combine CSVs];
+        M2 --> M3[Write to output];
+        N1[gexf] --> N2[Convert CSV to GEXF];
+        N2 --> N3[Write to output];
+
+    end
