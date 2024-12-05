@@ -59,3 +59,5 @@ Then: `./run_pipeline.sh`
 
 
 The coreference resolution was working wonderfully in google colab, but I'm having a devil of a time making it work locally. Your milage may vary.
+
+Incidentally, I've commented out the citation removal step, and just piped the name_replacement to feed the coref, skipping citation removal (which is slightly borked I now discover. Sigh...)
