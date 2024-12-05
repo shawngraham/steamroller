@@ -107,8 +107,9 @@ def replace_surnames(text: str) -> str:
 def main():
     # Ensure output folder exists
     input_folder = "source-texts"
-    output_folder = "results/step-one"
-
+    #output_folder = "results/step-one" # when we want to do citation_removal.py next
+    output_folder = "results/step-two"
+    
     # Create output folder if it doesn't exist
     os.makedirs(output_folder, exist_ok=True)
 
