@@ -62,6 +62,9 @@ The coreference resolution was working wonderfully in google colab, but I'm havi
 
 Incidentally, I've commented out the citation removal step, and just piped the name_replacement to feed the coref, skipping citation removal (which is slightly borked I now discover. Sigh...)
 
+[later that same day]
+Ah shit, maybe just skip citation and coreference altogether and point the triplet extraction to the output of the name fixer upper. The first version of all this just used an llm for every stage and frankly, though the hit on resources was huge, it really did work quite well.
+
 ```mermaid
 graph TD
     A[Start] --> B{Create directories};
