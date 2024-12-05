@@ -62,6 +62,7 @@ The coreference resolution was working wonderfully in google colab, but I'm havi
 
 Incidentally, I've commented out the citation removal step, and just piped the name_replacement to feed the coref, skipping citation removal (which is slightly borked I now discover. Sigh...)
 
+```mermaid
 graph TD
     A[Start] --> B{Create directories};
     B --> C[Run initial stages];
@@ -124,4 +125,4 @@ graph TD
         N1[gexf] --> N2[Convert CSV to GEXF];
         N2 --> N3[Write to output];
 
-    end
+    end```
