@@ -16,7 +16,7 @@ $ conda create -n steamroller python=3.11
 $ conda activate steamroller
 ```
 
-**Install some stuff***
+**Install some stuff**
 ```
 $ conda install -c conda-forge spacy
 $ python -m spacy download en_core_web_lg
@@ -35,6 +35,7 @@ llm -m themodel 'is this thing on'`
 
 **Run the steamroller**
 `$ chmod +x run_pipeline.sh`
+
 `./run_pipeline.sh`
 
 ...and yes, you need the ./ to run the shell script. 
