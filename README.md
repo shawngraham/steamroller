@@ -2,11 +2,22 @@
 
 Y'know, the coreference resolution largely isn't necessary, is it. The triplet extraction using the LLM implicitly handles that. Fixing all the names so that the strongest signals are present definitely helps though. So this updated version leaves my janky coreference and citation-removing code for the interested, but the pipeline skips it. I'm renaming the interim folders too so that they better describe what's inside of them. Currently testing using a local llm, smol17, to handle triplet extraction. smol17 is 1.7 gb, and I'm running it on a mac m1 mini with 16 gb ram.
 
-So what you need to do/install:
+So what you need to do:
 
+**Download this repository**
+
+You can click the green 'code' button dropdown, and select zip. Unzip somewhere sensible on your machine. Open a terminal or command prompt in that folder. I am assuming you have [anaconda or miniconda](https://docs.anaconda.com/) installed on your computer. If not, go get that first (you _can_ make an environment with python's env stuff, if you want.)
+
+If you're feeling particularly frisky, you can `$ git clone https://github.com/shawngraham/steamroller.git` instead. I'll probably not monitor this for commits, so if you really want to suggest improvements, get in touch with me first.
+
+**Make an environment**
 ```
 $ conda create -n steamroller python=3.11
 $ conda activate steamroller
+```
+
+**Install some stuff***
+```
 $ conda install -c conda-forge spacy
 $ python -m spacy download en_core_web_lg
 $ pip install llm
@@ -14,7 +25,7 @@ $ pip install pandas
 $ pip install networkx
 ```
 
-Then,
+**Install some more stuff**
 ```
 llm install llm-groq
 llm keys set groq
@@ -22,6 +33,11 @@ llm aliases set themodel groq-llama3.1-70b
 llm -m themodel 'is this thing on'`
 ```
 
+**Run the steamroller**
+`$ chmod +x run_pipeline.sh`
+`./run_pipeline.sh`
+
+...and yes, you need the ./ to run the shell script. 
 
 The list of predicates are those we used in our 2023 article: 
 
