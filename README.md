@@ -10,14 +10,23 @@ $ conda activate steamroller
 $ conda install -c conda-forge spacy
 $ python -m spacy download en_core_web_lg
 $ pip install llm
-$ llm install llm-gguf
-$ llm gguf download-model https://huggingface.co/lmstudio-community/SmolLM2-1.7B-Instruct-GGUF/resolve/main/SmolLM2-1.7B-Instruct-Q8_0.gguf -a smol17
-$ llm aliases set themodel gguf/SmolLM2-1.7B-Instruct-Q8_0
 $ pip install pandas
 $ pip install networkx
 ```
 
-The list of predicates are those we used in the 2023 AAP article.
+Then,
+```
+llm install llm-groq
+llm keys set groq
+llm aliases set themodel groq-llama3.1-70b
+llm -m themodel 'is this thing on'`
+```
+
+
+The list of predicates are those we used in our 2023 article: 
+
+Graham S, Yates D, El-Roby A, Brousseau C, Ellens J, McDermott C. Relationship Prediction in a Knowledge Graph Embedding Model of the Illicit Antiquities Trade. Advances in Archaeological Practice. 2023;11(2):126-138. doi:10.1017/aap.2023.1
+
 
 ### first version:
 
