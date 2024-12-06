@@ -30,13 +30,14 @@ $ pip install networkx
 llm install llm-groq
 llm keys set groq
 llm aliases set themodel groq-llama3.1-70b
-llm -m themodel 'is this thing on'`
+llm -m themodel 'is this thing on'
 ```
 
 **Run the steamroller**
+
 `$ chmod +x run_pipeline.sh`
 
-`./run_pipeline.sh`
+`$ ./run_pipeline.sh`
 
 ...and yes, you need the ./ to run the shell script. 
 
@@ -44,7 +45,7 @@ The list of predicates are those we used in our 2023 article:
 
 Graham S, Yates D, El-Roby A, Brousseau C, Ellens J, McDermott C. Relationship Prediction in a Knowledge Graph Embedding Model of the Illicit Antiquities Trade. Advances in Archaeological Practice. 2023;11(2):126-138. doi:10.1017/aap.2023.1
 
-You can modify the script 'suggest_predicates.py' and feed it a good example text of the material you're working on to see what it suggests. It's a combination of predifined synonyms and LLM. Give it a whirl, see what you think. Currently tuned towards the antiquities trade.
+You can modify the script 'suggest_predicates.py' and feed it a good example text of the material you're working on to see what it suggests - modify the last few lines to point to your own text. Modify the verbs in its rules etc. It's a combination of predifined synonyms and LLM. Give it a whirl, see what you think. Currently tuned towards the antiquities trade.
 
 
 ### first version:
