@@ -43,6 +43,8 @@ The list of predicates are those we used in our 2023 article:
 
 Graham S, Yates D, El-Roby A, Brousseau C, Ellens J, McDermott C. Relationship Prediction in a Knowledge Graph Embedding Model of the Illicit Antiquities Trade. Advances in Archaeological Practice. 2023;11(2):126-138. doi:10.1017/aap.2023.1
 
+You can modify the script 'suggest_predicates.py' and feed it a good example text of the material you're working on to see what it suggests. It's a combination of predifined synonyms and LLM. Give it a whirl, see what you think. Currently tuned towards the antiquities trade.
+
 
 ### first version:
 

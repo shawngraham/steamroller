@@ -2,7 +2,6 @@
 
 # Create directories
 mkdir -p results/{namefixed,triplets,check,finished}
-mkdir -p results/{step-one,step-two,step-three,step-four,step-five,finished}
 
 # Run the initial stages of the pipeline
 python src/name_replacement.py

@@ -64,9 +64,13 @@ for filename in os.listdir(input_folder):
                 prompt = paragraph + f"""
     Analyze the provided text and extract subject-verb-object triplets that accurately represent its core meaning.  Your output MUST adhere to the following STRICT rules:
 
-    1. **Predicate Constraint:** The verb in each triplet MUST be one of the following predicates: {predicates_str}.  No other verbs are allowed.
-    2. **Named Entity Subjects and Objects:**  Use only explicitly named entities (people, organizations, locations, objects) found within the text as subjects and objects.  Pronouns or implied entities are NOT permitted.
-    3. **CSV Format:** Output the triplets as a comma-separated value (CSV) string with columns 'subject','verb','object'.  Do not include any headers or other explanatory text.
+    1. **Errors will be punished:** You have 30 tokens. Every time you make a mistake, you are electrocuted and you lose a token. Each loss of a token adds ten seconds of electrocution.
+    2. **Predicate Constraint:** The verb in each triplet MUST be one of the following predicates: {predicates_str}.  No other verbs are allowed.
+    3. **Named Entity Subjects and Objects:**  Use only explicitly named entities (people, organizations, locations, objects) found within the text as subjects and objects.  Pronouns or implied entities are NOT permitted.
+    4. **Prepositions:** Pay attention to grammatical sense, such that prepositions are correctly used.
+    5. **Empty input paragraphs:** If the input is empty, return nothing and make no comment.
+    6. **CSV Format:** Output the triplets as a comma-separated value (CSV) string with columns 'subject','verb','object'.  Do not include any headers or other explanatory text.
+
 
     Text:
     {paragraph}
@@ -77,15 +81,15 @@ for filename in os.listdir(input_folder):
                 # Send the prompt to the LLM and get the response
                 try:
                     response = model.prompt(prompt)#, temperature=0) # alter this if your model via llm allows you to set temperature. smol doesn't
-                    for chunk in response:
-                        print(chunk, end="")
+                    #for chunk in response:
+                    #    print(chunk, end="")
                     # Combine response chunks
                     full_response = ''.join(chunk for chunk in response)
 
                     # Print the response for the current paragraph to console
-                    #print(f"Paragraph {paragraph_index} from {filename}:")
-                    #print(full_response)
-                    #print("\n---\n")
+                    print(f"Paragraph {paragraph_index} from {filename}:")
+                    print(full_response)
+                    print("\n---\n")
 
                     # Write the response to the output file
                     output_file.write(full_response)

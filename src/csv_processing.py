@@ -50,7 +50,7 @@ def error_check_predicates(input_file, output_file, valid_predicates=None):
 
             writer.writerow(row)
 
-def error_process_all_files(input_dir='results/step-four', output_dir='results/step-five'):
+def error_process_all_files(input_dir='results/triplets', output_dir='results/check'):
     os.makedirs(output_dir, exist_ok=True)
 
     for filename in os.listdir(input_dir):
@@ -252,8 +252,8 @@ def csv_to_gexf(input_csv, output_gexf, source_col='source', target_col='target'
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process CSV files.")
     parser.add_argument("action", choices=["error_check", "final_process", "concatenate", "gexf"], help="Action to perform")
-    parser.add_argument("--input_dir", default="results/step-four", help="Input directory (default: step-four)")
-    parser.add_argument("--output_dir", default="results/step-five", help="Output directory (default: step-five)")
+    parser.add_argument("--input_dir", default="results/error_check", help="Input directory (default: error-check)")
+    parser.add_argument("--output_dir", default="results/final_process", help="Output directory (default: final_process)")
     parser.add_argument("--output_file", default="results/combined_output.csv", help="Output filename for concatenation (default: combined_output.csv)")
     args = parser.parse_args()
 
