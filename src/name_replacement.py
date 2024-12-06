@@ -108,8 +108,8 @@ def main():
     # Ensure output folder exists
     input_folder = "source-texts"
     #output_folder = "results/step-one" # when we want to do citation_removal.py next
-    output_folder = "results/step-two"
-    
+    output_folder = "results/namefixed"
+
     # Create output folder if it doesn't exist
     os.makedirs(output_folder, exist_ok=True)
 
@@ -129,7 +129,7 @@ def main():
                 with open(output_file_path, 'w', encoding='utf-8') as file:
                     file.write(replace_surnames(text))
 
-                print(f"Now find under step-one -> Name Replacement Processed: {filename}")
+                print(f"Name Replacement Processed: namefixed/{filename}")
 
             except Exception as e:
                 print(f"Error processing {filename}: {e}")

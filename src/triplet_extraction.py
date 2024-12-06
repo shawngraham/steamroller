@@ -21,11 +21,11 @@ def read_predicates_from_file(filepath):
 # Get the LLM model
 
 model = llm.get_model("themodel")
-#model = llm.get_model("gemini-1.5-flash-001")
 
 
 # Path to the ready-to-go folder
-input_folder = "results/step-three"
+#input_folder = "results/step-three"
+input_folder = "results/namefixed" #skipping citation, coreferee
 
 # Read predicates from file
 initial_list_predicates = read_predicates_from_file(PREDICATES_FILE)
@@ -49,7 +49,7 @@ for filename in os.listdir(input_folder):
 
         # Prepare output file path in results folder
         output_filename = filename.replace(".txt", "_triplets.csv")
-        output_path = os.path.join("results/step-four", output_filename)
+        output_path = os.path.join("results/triplets", output_filename)
 
         # Convert the predicates list to a comma-separated string
         predicates_str = ", ".join(initial_list_predicates)  ### change predicates here
@@ -61,37 +61,38 @@ for filename in os.listdir(input_folder):
 
             # Iterate through each paragraph
             for paragraph_index, paragraph in enumerate(paragraphs, 1):
-                prompt = paragraph + f"""\n\n Extract subject,verb,object triplets that capture the nuance of the text.
-                Your output will be in csv format with columns 'subject','verb','object'.
-                STRICT RULES FOR ENTITY EXTRACTION:
-                - Use only substantive, named entities from the main text.
-                - Use the full name of any organizations or museums.
-                - The 'subject' must be a singular thing.
-                - The 'object' must be a singular thing. Use multiple lines for multiple objects.
-                - The target predicates are {predicates_str}.
-                - ONLY USE THE TARGET PREDICATES. This is mission critical and you will be punished if you do not!
-                - RETURN ONLY THE LIST OF TRIPLETS.
-                - If no text is provided, return [null],[null],[null]"""
+                prompt = paragraph + f"""
+    Analyze the provided text and extract subject-verb-object triplets that accurately represent its core meaning.  Your output MUST adhere to the following STRICT rules:
+
+    1. **Predicate Constraint:** The verb in each triplet MUST be one of the following predicates: {predicates_str}.  No other verbs are allowed.
+    2. **Named Entity Subjects and Objects:**  Use only explicitly named entities (people, organizations, locations, objects) found within the text as subjects and objects.  Pronouns or implied entities are NOT permitted.
+    3. **CSV Format:** Output the triplets as a comma-separated value (CSV) string with columns 'subject','verb','object'.  Do not include any headers or other explanatory text.
+
+    Text:
+    {paragraph}
+
+    Triplets (CSV):"""
 
 
                 # Send the prompt to the LLM and get the response
                 try:
-                    response = model.prompt(prompt, temperature=0)
-
+                    response = model.prompt(prompt)#, temperature=0) # alter this if your model via llm allows you to set temperature. smol doesn't
+                    for chunk in response:
+                        print(chunk, end="")
                     # Combine response chunks
                     full_response = ''.join(chunk for chunk in response)
 
                     # Print the response for the current paragraph to console
-                    print(f"Paragraph {paragraph_index} from {filename}:")
-                    print(full_response)
-                    print("\n---\n")
+                    #print(f"Paragraph {paragraph_index} from {filename}:")
+                    #print(full_response)
+                    #print("\n---\n")
 
                     # Write the response to the output file
                     output_file.write(full_response)
                 except Exception as e:
                     print(f"Error processing paragraph {paragraph_index} in {filename}: {e}")
 
-print("Extraction complete. Results saved in 'step-four' folder.")
+print("Extraction complete. Results saved in 'results/triplets' folder.")
 
 
 

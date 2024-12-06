@@ -1,3 +1,26 @@
+### dec 6
+
+Y'know, the coreference resolution largely isn't necessary, is it. The triplet extraction using the LLM implicitly handles that. Fixing all the names so that the strongest signals are present definitely helps though. So this updated version leaves my janky coreference and citation-removing code for the interested, but the pipeline skips it. I'm renaming the interim folders too so that they better describe what's inside of them. Currently testing using a local llm, smol17, to handle triplet extraction. smol17 is 1.7 gb, and I'm running it on a mac m1 mini with 16 gb ram.
+
+So what you need to do/install:
+
+```
+$ conda create -n steamroller python=3.11
+$ conda activate steamroller
+$ conda install -c conda-forge spacy
+$ python -m spacy download en_core_web_lg
+$ pip install llm
+$ llm install llm-gguf
+$ llm gguf download-model https://huggingface.co/lmstudio-community/SmolLM2-1.7B-Instruct-GGUF/resolve/main/SmolLM2-1.7B-Instruct-Q8_0.gguf -a smol17
+$ llm aliases set themodel gguf/SmolLM2-1.7B-Instruct-Q8_0
+$ pip install pandas
+$ pip install networkx
+```
+
+The list of predicates are those we used in the 2023 AAP article.
+
+### first version:
+
 I call this 'steamroller' because it's meant to take a towering edifice of unstructured text and flatten it into a knowledge graph. You define your list of predicates, and then run the pipeline. At the other end, you get a csv and a gexf file for further exploration and analysis.
 
 The idea is that we remove ambiguity in the text by writing out personal names fully, removing citations if they exist, and then using coreference resolution to make it clear what actor is doing what. Then we use a language model to extract the triplets according to the template. The pipeline pauses after that and marks up which results don't conform to the desired list of predicates (or are not in triplet form). The user can make adjustments, then the pipeline resumes to do the final reshaping.
@@ -41,7 +64,7 @@ steamroller/
 │   ├── coref_resolution.py
 │   ├── triplet_extraction.py
 │   └── csv_processing.py
-├── source-texts/  (Place your input .txt files here)
+├── source-texts/  #(Place your input .txt files here)
 ├── results/
 │   └── step-one/
 │   └── step-two/
@@ -59,73 +82,3 @@ Then: `./run_pipeline.sh`
 
 
 The coreference resolution was working wonderfully in google colab, but I'm having a devil of a time making it work locally. Your milage may vary.
-
-Incidentally, I've commented out the citation removal step, and just piped the name_replacement to feed the coref, skipping citation removal (which is slightly borked I now discover. Sigh...)
-
-[later that same day]
-Ah shit, maybe just skip citation and coreference altogether and point the triplet extraction to the output of the name fixer upper. The first version of all this just used an llm for every stage and frankly, though the hit on resources was huge, it really did work quite well.
-
-```mermaid
-graph TD
-    A[Start] --> B{Create directories};
-    B --> C[Run initial stages];
-    C --> D[python src/name_replacement.py];
-    D --> E[python src/coref_resolution.py];
-    E --> F[python src/triplet_extraction.py];
-    F --> G[Run error checking];
-    G --> H[python src/csv_processing.py error_check];
-    H --> I[Manual Inspection];
-    I --> J{Manual checks complete?};
-    J -- Yes --> K[Continue processing];
-    J -- No --> I;
-    K --> L[python src/csv_processing.py final_process];
-    L --> M[python src/csv_processing.py concatenate];
-    M --> N[python src/csv_processing.py gexf];
-    N --> O[End];
-
-    subgraph "Initial Stages"
-        C --> D;
-        D --> E;
-        E --> F;
-    end
-
-    subgraph "Error Checking"
-        G --> H;
-    end
-
-    subgraph "Final Processing"
-        K --> L;
-        L --> M;
-        M --> N;
-    end
-
-    subgraph "name_replacement.py"
-        D1[Read text files] --> D2[Extract full names];
-        D2 --> D3[Replace surnames];
-        D3 --> D4[Write to output];
-    end
-
-    subgraph "coref_resolution.py"
-        E1[Read text files] --> E2[Process with spacy and coreferee];
-        E2 --> E3[Perform entity co-resolution];
-        E3 --> E4[Write to output];
-    end
-
-    subgraph "triplet_extraction.py"
-        F1[Read text files] --> F2[Split into paragraphs];
-        F2 --> F3[Send to LLM];
-        F3 --> F4[Extract triplets];
-        F4 --> F5[Write to CSV];
-    end
-
-    subgraph "csv_processing.py"
-        H1[error_check] --> H2[Check predicates and column count];
-        H2 --> H3[Write to output];
-        L1[final_process] --> L2[Process CSVs];
-        L2 --> L3[Write to output];
-        M1[concatenate] --> M2[Combine CSVs];
-        M2 --> M3[Write to output];
-        N1[gexf] --> N2[Convert CSV to GEXF];
-        N2 --> N3[Write to output];
-
-    end```
