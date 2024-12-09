@@ -25,7 +25,8 @@ graph TD
     D --> Q;
     style D fill:#f9f,stroke:#333,stroke-width:2px
     style J fill:#f9f,stroke:#333,stroke-width:2px
-    style N fill:#f9f,stroke:#333,stroke-width:2px```
+    style N fill:#f9f,stroke:#333,stroke-width:2px
+```
 
 ### dec 6
 
