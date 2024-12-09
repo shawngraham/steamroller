@@ -1,6 +1,45 @@
 ### dec 9
 So I was thinking, what if two other models evaluated the resulting triplets against the original source texts as a kind of error-checking? So [results_evaluator.py] was born. This is kinda nifty. You define two other models in there, and then turn it loose from the root of this repo. The first model looks at the source text and the triplet, suggests problems/solutions. The next model looks at the first model's response and the source text and triplets, and concurs or improves or alters.
 
+```mermaid
+graph LR
+    A[Start] --> B{Load Predicates from predicates.txt};
+    B -- Success --> C{Iterate through source texts};
+    B -- Failure --> Z[Error: Predicates file not found];
+    C --> D{Read source text & triplets};
+    D -- Success --> E[Model 1 Prompt Creation];
+    D -- Failure --> Y[Error: Source text/triplets file not found];
+    E --> F[Run Model 1];
+    F -- Success --> G{Check Model 1 Output};
+    F -- Failure --> X[Error: Model 1 execution failed];
+    G -- Accurate & Complete --> H[Model 2 Prompt Creation using Model 1 output];
+    G -- Inaccurate/Incomplete --> H;
+    H --> I[Run Model 2];
+    I -- Success --> J{Extract Rewritten Triplets};
+    I -- Failure --> W[Error: Model 2 execution failed];
+    J -- Success --> K[Save Results Model 1, Model 2, Rewritten Triplets];
+    J -- Failure --> V[Warning: Could not extract rewritten triplets];
+    K --> L[End];
+    V --> L;
+    X --> L;
+    Y --> L;
+    W --> L;
+    Z --> L;
+
+    subgraph "Model 1"
+        E; F; G;
+    end
+
+    subgraph "Model 2"
+        H; I; J;
+    end
+
+    style Z fill:#f9f,stroke:#333,stroke-width:2px
+    style Y fill:#f9f,stroke:#333,stroke-width:2px
+    style X fill:#f9f,stroke:#333,stroke-width:2px
+    style W fill:#f9f,stroke:#333,stroke-width:2px
+    style V fill:#f9f,stroke:#333,stroke-width:2px
+```
 
 ### dec 6
 
