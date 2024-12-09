@@ -1,32 +1,6 @@
 ### dec 9
 So I was thinking, what if two other models evaluated the resulting triplets against the original source texts as a kind of error-checking? So [results_evaluator.py] was born. This is kinda nifty. You define two other models in there, and then turn it loose from the root of this repo. The first model looks at the source text and the triplet, suggests problems/solutions. The next model looks at the first model's response and the source text and triplets, and concurs or improves or alters.
 
-```mermaid
-graph TD
-    A[Start] --> B{Load Predicates from predicates.txt};
-    B -- Success --> C[Iterate through source-texts];
-    B -- Failure --> D[Exit (Predicate file error)];
-    C --> E{Read source text (source/texts/{i}.txt)};
-    E --> F{Read triplets (results/triplets/{i}_triplets.csv)};
-    F --> G[Construct Prompt for Model 1];
-    G --> H[Run Model 1 (llm -m groq-gemma2)];
-    H -- Success --> I[Store Model 1 Output];
-    H -- Failure --> J[Exit (Model 1 error)];
-    I --> K[Construct Prompt for Model 2];
-    K --> L[Run Model 2 (llm -m groq-llama3)];
-    L -- Success --> M[Extract Rewritten Triplets];
-    L -- Failure --> N[Exit (Model 2 error)];
-    M --> O[Save Model 1, Model 2 Outputs & Rewritten Triplets to triplet_analyses/{i}_analysis.txt];
-    O --> P[Next source text?];
-    P -- Yes --> C;
-    P -- No --> Q[End];
-    J --> Q;
-    N --> Q;
-    D --> Q;
-    style D fill:#f9f,stroke:#333,stroke-width:2px
-    style J fill:#f9f,stroke:#333,stroke-width:2px
-    style N fill:#f9f,stroke:#333,stroke-width:2px
-```
 
 ### dec 6
 
