@@ -1,3 +1,6 @@
+### dec 9
+So I was thinking, what if two other models evaluated the resulting triplets against the original source texts as a kind of error-checking? So [results_evaluator.py] was born. This is kinda nifty. You define two other models in there, and then turn it loose from the root of this repo. The first model looks at the source text and the triplet, suggests problems/solutions. The next model looks at the first model's response and the source text and triplets, and concurs or improves or alters.
+
 ### dec 6
 
 Y'know, the coreference resolution largely isn't necessary, is it. The triplet extraction using the LLM implicitly handles that. Fixing all the names so that the strongest signals are present definitely helps though. So this updated version leaves my janky coreference and citation-removing code for the interested, but the pipeline skips it. I'm renaming the interim folders too so that they better describe what's inside of them. Currently testing using a local llm, smol17, to handle triplet extraction. smol17 is 1.7 gb, and I'm running it on a mac m1 mini with 16 gb ram.
