@@ -61,11 +61,11 @@ def process_text_and_triplets(source_text_path, triplets_path, predicates, model
 
 
     # --- Model 2 ---
-    model2_prompt = f"""Review the following analysis from Model 1, the original source text, and the provided triplets:\n\nModel 1 Analysis:\n{model1_output}\n\nSource Text:\n{source_text}\n\nPredicates: {', '.join(predicates)}\n\nTriplets:\n""" #Added Model 1 output here
+    model2_prompt = f"""Review the following analysis from Model 1, the original source text, and the provided triplets.  If Model 1's analysis is inaccurate or incomplete, use the predicates below to help refine the analysis and generate corrected triplets:\n\nModel 1 Analysis:\n{model1_output}\n\nSource Text:\n{source_text}\n\nPredicates: {', '.join(predicates)}\n\nTriplets:\n"""
     for i, triplet in enumerate(triplets):
         model2_prompt += f"Triplet {i+1}: {triplet[0]}, {triplet[1]}, {triplet[2]}\n"
 
-    model2_prompt += """\nFurther refine the analysis, providing more specific suggestions for improvement, clearly stating any remaining inconsistencies or inaccuracies, and ensuring the analysis aligns with both the source text and the triplets.  Then, provide a set of rewritten triplets based on your analysis, in the following format:
+    model2_prompt += """\nFurther refine the analysis, providing more specific suggestions for improvement, clearly stating any remaining inconsistencies or inaccuracies, and ensuring the analysis aligns with both the source text and the triplets.  If needed, use the provided predicates to generate more accurate and complete triplets. Then, provide a set of rewritten triplets based on your analysis, in the following format:
 
 Rewritten Triplets:
 Triplet 1: [rewritten_text1], [rewritten_text2], [rewritten_text3]
@@ -73,32 +73,16 @@ Triplet 2: [rewritten_text4], [rewritten_text5], [rewritten_text6]
 ...
 """
 
-
     try:
         model2_process = subprocess.run(model2_command + [model2_prompt], capture_output=True, text=True, check=True)
         model2_output = model2_process.stdout
     except subprocess.CalledProcessError as e:
         print(f"Error running Model 2: {e}")
         print(f"Return code: {e.returncode}, Output: {e.stderr}")
-        return None, None
+        return None, None, None
 
-
-    # Extract rewritten triplets (this is a simple extraction; improve as needed)
-    rewritten_triplets_match = re.search(r"Rewritten Triplets:\n(.*)", model2_output, re.DOTALL)
-    rewritten_triplets = []
-    if rewritten_triplets_match:
-        for line in rewritten_triplets_match.group(1).strip().splitlines():
-            parts = line.split(": ", 1)
-            if len(parts) == 2:
-                try:
-                    rewritten_triplets.append( [x.strip() for x in parts[1].split(',')])
-
-                except:
-                    print(f"Error parsing triplet from Model 2 output: {parts[1]}")
-    else:
-        print("Could not extract rewritten triplets from Model 2's output.")
-        rewritten_triplets = None
-
+    # Extract rewritten triplets (use your improved extraction function here)
+    rewritten_triplets = extract_rewritten_triplets(model2_output)
 
 
     return model1_output, model2_output, rewritten_triplets
