@@ -87,7 +87,26 @@ Triplet 2: [rewritten_text4], [rewritten_text5], [rewritten_text6]
 
     return model1_output, model2_output, rewritten_triplets
 
-
+def extract_rewritten_triplets(model_output):
+    """Extracts rewritten triplets from Model 2's output."""
+    rewritten_triplets_match = re.search(r"Rewritten Triplets:\n(.*)", model_output, re.DOTALL)
+    rewritten_triplets = []
+    if rewritten_triplets_match:
+        for line in rewritten_triplets_match.group(1).strip().splitlines():
+            parts = line.split(": ", 1)
+            if len(parts) == 2:
+                try:
+                    triplet_elements = [x.strip() for x in parts[1].split(',')]
+                    # Basic check for valid triplet length
+                    if len(triplet_elements) == 3:
+                        rewritten_triplets.append(triplet_elements)
+                    else:
+                        print(f"Warning: Invalid triplet format: {parts[1]}")
+                except Exception as e:
+                    print(f"Error parsing triplet: {e}")
+    else:
+        print("Could not extract rewritten triplets from Model 2's output.")
+    return rewritten_triplets
 
 def evaluate_triplets(model1_command, model2_command, source_texts_folder, triplets_folder, predicates_filepath, output_folder):
     predicates = load_predicates(predicates_filepath)
