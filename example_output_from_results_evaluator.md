@@ -2,13 +2,14 @@
 Giacomo Medici started dealing in antiquities in Rome during the 1960s . In July 1967, Giacomo Medici was convicted in Italy of receiving looted artefacts, though in the same year he met and became an important supplier of antiquities to US dealer Robert Hecht . In 1968, Medici opened the gallery Antiquaria Romana in Rome and began to explore business opportunities in Switzerland . It is widely believed that in December 1971 he bought the illegally-excavated Euphronios (Sarpedon) krater from tombaroli before transporting it to Switzerland and selling it to Hecht .
 
 **A snippet of the triplets produced by the first pass of steamroller on that text:**
+```
 subject,verb,object
 Giacomo Medici,convicts_of,Robert Hecht
 Giacomo Medici,buys_from,tombaroli
 Giacomo Medici,sells,Euphronios (Sarpedon) krater
 Giacomo Medici,makes_sale_to,Robert Hecht
 Giacomo Medici,works_with,Christian Boursaud
-...
+...```
 
 ### Output from model_evaluator.py 
 Model 1 Output:
