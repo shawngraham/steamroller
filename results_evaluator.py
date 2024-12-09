@@ -45,8 +45,15 @@ def process_text_and_triplets(source_text_path, triplets_path, model1_command, m
         print(f"Return code: {e.returncode}, Output: {e.stderr}")
         return None
 
+
     # --- Model 2 ---
-    model2_prompt = f"Review the following analysis:\n\n{model1_output}\n\nFurther refine the analysis, providing more specific suggestions for improvement and clearly stating any remaining inconsistencies or inaccuracies. Finally, return the list of BEST TRIPLETS."
+    model2_prompt = f"""Review the following analysis from Model 1, the original source text, and the provided triplets:\n\nModel 1 Analysis:\n{model1_output}\n\nSource Text:\n{source_text}\n\nTriplets:\n"""
+    for i, triplet in enumerate(triplets):
+        model2_prompt += f"Triplet {i+1}: {triplet[0]}, {triplet[1]}, {triplet[2]}\n"
+
+    model2_prompt += "\nFurther refine the analysis, providing more specific suggestions for improvement, clearly stating any remaining inconsistencies or inaccuracies, and ensuring the analysis aligns with both the source text and the triplets."
+
+
     try:
         model2_process = subprocess.run(model2_command + [model2_prompt], capture_output=True, text=True, check=True)
         model2_output = model2_process.stdout
