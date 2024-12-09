@@ -1,0 +1,32 @@
+"is_the_owner_of" describes ownership of a business entity.
+"works_with" describes a collaborative business relationship.
+"works_for" describes an employment relationship.
+"has_possession_of" describes control of an artifact.
+"purchases" describes the act of buying an artifact.
+"buys_from" specifies the seller in a purchase.
+"sells" describes the act of selling a specific artifact.
+"makes_sale_to" specifies the buyer in a sale.
+"donates_to" describes the act of donating an artifact.
+"obtains_from" describes artifact acquisition with unclear circumstances.
+"comes_from" attributes the origin of an artifact.
+"has_immediate_family_member" describes a direct family relationship.
+"legal_status_change" describes involvement with law enforcement.
+"has_role" describes the role of an actor.
+"loots_from" indicates the source of looted artifacts.
+"smuggles_to" specifies the destination of smuggled artifacts.
+"forges_provenance_for" describes the creation of false provenance.
+"falsifies_documentation_for" captures the act of creating false documents.
+"employs_as_intermediary" shows the relationship between a dealer and intermediary.
+"acts_as_front_for" identifies an actor acting as a cover for another.
+"funds_looting_of" shows financial support for looting.
+"re-works" describes artifact alteration to enhance value or disguise origin.
+"files_suit_against" specifies who is suing whom.
+"issues_seizure_warrant_for" indicates the issuance of a seizure warrant.
+"impounds" describes the legal seizure and holding of artifacts.
+"repatriates_to" captures the return of artifacts.
+"investigates" indicates an investigation by a specific entity.
+"convicts_of" specifies the crime for which someone is convicted.
+"appraises_at" includes the appraised value.
+"has_estimated_value_of" records estimated values, especially for auctions.
+"is_consigned_by" identifies the consignor in an auction.
+"is_auctioned_at" indicates the auction location.
