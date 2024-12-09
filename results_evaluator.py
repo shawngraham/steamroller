@@ -57,11 +57,11 @@ def process_text_and_triplets(source_text_path, triplets_path, predicates, model
     except subprocess.CalledProcessError as e:
         print(f"Error running Model 1: {e}")
         print(f"Return code: {e.returncode}, Output: {e.stderr}")
-        return None, None
+        return None, None, None
 
 
     # --- Model 2 ---
-    model2_prompt = f"""Review the following analysis from Model 1, the original source text, and the provided triplets:\n\nModel 1 Analysis:\n{model1_output}\n\nSource Text:\n{source_text}\n\nTriplets:\n"""
+    model2_prompt = f"""Review the following analysis from Model 1, the original source text, and the provided triplets:\n\nModel 1 Analysis:\n{model1_output}\n\nSource Text:\n{source_text}\n\nPredicates: {', '.join(predicates)}\n\nTriplets:\n""" #Added Model 1 output here
     for i, triplet in enumerate(triplets):
         model2_prompt += f"Triplet {i+1}: {triplet[0]}, {triplet[1]}, {triplet[2]}\n"
 
