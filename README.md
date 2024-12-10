@@ -1,5 +1,5 @@
 ### dec 9
-So I was thinking, what if two other models evaluated the resulting triplets against the original source texts as a kind of error-checking? So [results_evaluator.py] was born. This is kinda nifty. You define two other models in there, and then turn it loose from the root of this repo. The first model looks at the source text and the triplet, suggests problems/solutions. The next model looks at the first model's response and the source text and triplets, and concurs or improves or alters.
+So I was thinking (prompted by [Eric Kansa](https://scholar.social/@ekansa/113624713408850780) and an exercise [we did in my class](https://colab.research.google.com/drive/16iPwBWc4mAKomTd1JKpZ8KzNQZ86S-hW?usp=sharing#scrollTo=rPXqnhhSd2Xp), what if two other models evaluated the resulting triplets against the original source texts as a kind of error-checking? So [results_evaluator.py] was born. This is kinda nifty. You define two other models in there, and then turn it loose from the root of this repo. The first model looks at the source text and the triplet, suggests problems/solutions. The next model looks at the first model's response and the source text and triplets, and concurs or improves or alters.
 
 ```mermaid
 graph LR
